@@ -9,6 +9,10 @@ module.exports = Validator.Type "Shape",
 
   init: (name, types) ->
 
+    if isType name, Object
+      types = name
+      name = ""
+
     assertType name, String
     assertType types, Object
 
@@ -27,7 +31,7 @@ module.exports = Validator.Type "Shape",
       meta = { value: obj }
       return { error, meta }
 
-    for key, type of types
+    for key, type of @types
       continue if isType obj[key], type
       error = wrongType type, key
       meta = { key, value: obj[key] }
