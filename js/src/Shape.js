@@ -1,6 +1,4 @@
-var Validator, assertType, isConstructor, isType, wrongType;
-
-isConstructor = require("isConstructor");
+var Validator, assertType, isType, wrongType;
 
 assertType = require("assertType");
 
@@ -23,7 +21,7 @@ module.exports = Validator.Type("Shape", {
   },
   test: function(obj) {
     var key, ref, type;
-    if (!isConstructor(obj, Object)) {
+    if (!isType(obj, Object)) {
       return false;
     }
     ref = this.types;
@@ -37,8 +35,8 @@ module.exports = Validator.Type("Shape", {
   },
   assert: function(obj, key) {
     var error, meta, ref, type;
-    if (!isConstructor(obj, Object)) {
-      error = makeTypeError(Object, key);
+    if (!isType(obj, Object)) {
+      error = wrongType(Object, key);
       meta = {
         value: obj
       };

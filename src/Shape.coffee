@@ -1,5 +1,4 @@
 
-isConstructor = require "isConstructor"
 assertType = require "assertType"
 Validator = require "Validator"
 wrongType = require "wrongType"
@@ -20,14 +19,14 @@ module.exports = Validator.Type "Shape",
     @types = types
 
   test: (obj) ->
-    return no if not isConstructor obj, Object
+    return no if not isType obj, Object
     return no for key, type of @types when not isType obj[key], type
     return yes
 
   assert: (obj, key) ->
 
-    unless isConstructor obj, Object
-      error = makeTypeError Object, key
+    if not isType obj, Object
+      error = wrongType Object, key
       meta = { value: obj }
       return { error, meta }
 
