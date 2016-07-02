@@ -34,7 +34,7 @@ module.exports = Validator.Type("Shape", {
     return true;
   },
   assert: function(obj, key) {
-    var error, meta, ref, type;
+    var error, keyPath, meta, prop, ref, type;
     if (!isType(obj, Object)) {
       error = wrongType(Object, key);
       meta = {
@@ -46,14 +46,15 @@ module.exports = Validator.Type("Shape", {
       };
     }
     ref = this.types;
-    for (key in ref) {
-      type = ref[key];
-      if (isType(obj[key], type)) {
+    for (prop in ref) {
+      type = ref[prop];
+      if (isType(obj[prop], type)) {
         continue;
       }
-      error = wrongType(type, key);
+      keyPath = key + "." + prop;
+      error = wrongType(type, keyPath);
       meta = {
-        key: key,
+        key: keyPath,
         value: obj[key]
       };
       return {

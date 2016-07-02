@@ -30,9 +30,10 @@ module.exports = Validator.Type "Shape",
       meta = { value: obj }
       return { error, meta }
 
-    for key, type of @types
-      continue if isType obj[key], type
-      error = wrongType type, key
-      meta = { key, value: obj[key] }
+    for prop, type of @types
+      continue if isType obj[prop], type
+      keyPath = key + "." + prop
+      error = wrongType type, keyPath
+      meta = { key: keyPath, value: obj[key] }
       return { error, meta }
     return
