@@ -1,6 +1,6 @@
 {
   "name": "Shape",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "js/Shape",
   "dependencies": {
     "Validator": "aleclarson/Validator#1.1.0",
