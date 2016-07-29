@@ -33,7 +33,10 @@ module.exports = Validator.Type "Shape",
     return yes
 
   _assert: (obj, types, keyPath) ->
-    return if not isType obj, Object
+
+    if not isType obj, Object
+      return wrongType Object, keyPath
+
     for key, type of types
       value = obj[key]
       keyPath and key = keyPath + "." + key

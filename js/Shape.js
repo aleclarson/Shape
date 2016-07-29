@@ -46,7 +46,7 @@ module.exports = Validator.Type("Shape", {
   _assert: function(obj, types, keyPath) {
     var key, type, value;
     if (!isType(obj, Object)) {
-      return;
+      return wrongType(Object, keyPath);
     }
     for (key in types) {
       type = types[key];
