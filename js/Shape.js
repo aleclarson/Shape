@@ -65,4 +65,4 @@ module.exports = Validator.Type("Shape", {
   }
 });
 
-//# sourceMappingURL=../../map/src/Shape.map
+//# sourceMappingURL=map/Shape.map
