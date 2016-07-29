@@ -19,21 +19,26 @@ module.exports = Validator.Type "Shape",
     @types = types
 
   test: (obj) ->
+    @_test obj, @types
+
+  assert: (obj, keyPath) ->
+    @_assert obj, @types, keyPath
+
+  _test: (obj, types) ->
     return no if not isType obj, Object
-    return no for key, type of @types when not isType obj[key], type
+    for key, type of types
+      if isType type, Object
+        return no if not @_test obj[key], type
+      return no if not isType obj[key], type
     return yes
 
-  assert: (obj, key) ->
-
-    if not isType obj, Object
-      error = wrongType Object, key
-      meta = { value: obj }
-      return { error, meta }
-
-    for prop, type of @types
-      continue if isType obj[prop], type
-      keyPath = key + "." + prop
-      error = wrongType type, keyPath
-      meta = { key: keyPath, value: obj[key] }
-      return { error, meta }
+  _assert: (obj, types, keyPath) ->
+    return if not isType obj, Object
+    for key, type of types
+      value = obj[key]
+      keyPath and key = keyPath + "." + key
+      if isType type, Object
+        return @_assert value, type, key
+      continue if isType value, type
+      return wrongType this, key
     return

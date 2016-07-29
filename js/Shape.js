@@ -20,47 +20,45 @@ module.exports = Validator.Type("Shape", {
     return this.types = types;
   },
   test: function(obj) {
-    var key, ref, type;
+    return this._test(obj, this.types);
+  },
+  assert: function(obj, keyPath) {
+    return this._assert(obj, this.types, keyPath);
+  },
+  _test: function(obj, types) {
+    var key, type;
     if (!isType(obj, Object)) {
       return false;
     }
-    ref = this.types;
-    for (key in ref) {
-      type = ref[key];
+    for (key in types) {
+      type = types[key];
+      if (isType(type, Object)) {
+        if (!this._test(obj[key], type)) {
+          return false;
+        }
+      }
       if (!isType(obj[key], type)) {
         return false;
       }
     }
     return true;
   },
-  assert: function(obj, key) {
-    var error, keyPath, meta, prop, ref, type;
+  _assert: function(obj, types, keyPath) {
+    var key, type, value;
     if (!isType(obj, Object)) {
-      error = wrongType(Object, key);
-      meta = {
-        value: obj
-      };
-      return {
-        error: error,
-        meta: meta
-      };
+      return;
     }
-    ref = this.types;
-    for (prop in ref) {
-      type = ref[prop];
-      if (isType(obj[prop], type)) {
+    for (key in types) {
+      type = types[key];
+      value = obj[key];
+      keyPath && (key = keyPath + "." + key);
+      if (isType(type, Object)) {
+        return this._assert(value, type, key);
+      }
+      if (isType(value, type)) {
         continue;
       }
-      keyPath = key + "." + prop;
-      error = wrongType(type, keyPath);
-      meta = {
-        key: keyPath,
-        value: obj[key]
-      };
-      return {
-        error: error,
-        meta: meta
-      };
+      return wrongType(this, key);
     }
   }
 });
