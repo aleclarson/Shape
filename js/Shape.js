@@ -58,7 +58,7 @@ module.exports = Validator.Type("Shape", {
       if (isType(value, type)) {
         continue;
       }
-      return wrongType(this, key);
+      return wrongType(type, key);
     }
   }
 });

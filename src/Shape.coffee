@@ -43,5 +43,5 @@ module.exports = Validator.Type "Shape",
       if isType type, Object
         return @_assert value, type, key
       continue if isType value, type
-      return wrongType this, key
+      return wrongType type, key
     return
