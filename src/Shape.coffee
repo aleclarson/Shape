@@ -4,7 +4,7 @@ Validator = require "Validator"
 wrongType = require "wrongType"
 isType = require "isType"
 
-module.exports = Validator.Type "Shape",
+Shape = Validator.Type "Shape",
 
   init: (name, types) ->
 
@@ -17,6 +17,7 @@ module.exports = Validator.Type "Shape",
 
     @name = name
     @types = types
+    return
 
   test: (obj) ->
     @_test obj, @types
@@ -45,3 +46,5 @@ module.exports = Validator.Type "Shape",
       continue if isType value, type
       return wrongType type, key
     return
+
+module.exports = Shape
