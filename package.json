@@ -1,0 +1,11 @@
+{
+  "name": "Shape",
+  "version": "2.0.3",
+  "main": "js/Shape",
+  "dependencies": {
+    "Validator": "aleclarson/Validator#1.2.0",
+    "assertType": "aleclarson/assertType#2.0.2",
+    "isType": "aleclarson/isType#1.0.2",
+    "wrongType": "aleclarson/wrongType#1.0.1"
+  }
+}
