@@ -10,7 +10,7 @@ Shape = Validator.Type "Shape",
 
     if isType name, Object
       types = name
-      name = ""
+      name = "Object"
 
     assertType name, String
     assertType types, Object
