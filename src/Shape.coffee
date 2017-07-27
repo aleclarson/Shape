@@ -10,7 +10,7 @@ Shape = Validator.Type "Shape",
 
     if isType name, Object
       types = name
-      name = ""
+      name = "Object"
 
     assertType name, String
     assertType types, Object
@@ -19,32 +19,38 @@ Shape = Validator.Type "Shape",
     @types = types
     return
 
-  test: (obj) ->
-    @_test obj, @types
+  test: (values) ->
+    testTypes values, @types
 
-  assert: (obj, keyPath) ->
-    @_assert obj, @types, keyPath
-
-  _test: (obj, types) ->
-    return no if not isType obj, Object
-    for key, type of types
-      if isType type, Object
-        return no if not @_test obj[key], type
-      return no if not isType obj[key], type
-    return yes
-
-  _assert: (obj, types, keyPath) ->
-
-    if not isType obj, Object
-      return wrongType Object, keyPath
-
-    for key, type of types
-      value = obj[key]
-      keyPath and key = keyPath + "." + key
-      if isType type, Object
-        return @_assert value, type, key
-      continue if isType value, type
-      return wrongType type, key
-    return
+  assert: (values, path) ->
+    assertTypes values, @types, path
 
 module.exports = Shape
+
+testTypes = (values, types) ->
+  return no unless isType values, Object
+  for key, type of types
+    if isType type, Object
+      return no unless testTypes values[key], type
+    return no unless isType values[key], type
+  return yes
+
+assertTypes = (values, types, path) ->
+
+  unless isType values, Object
+    return wrongType Object, path
+
+  for key, type of types
+    value = values[key]
+    key = path + "." + key if path
+
+    if isType type, Object
+      return assertTypes value, type, key
+
+    if type instanceof Validator
+      return error if error = type.assert value, key
+
+    else unless isType value, type
+      return wrongType type, key
+
+  return
